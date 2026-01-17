@@ -298,30 +298,27 @@ body {
   </div>
 </div>
 <script>
-/* ===== ELEMENTS ===== */
+/* ========= ELEMENTS ========= */
 const addBtn = document.getElementById("addContactBtn");
 const modal = document.getElementById("addContactModal");
 const chatList = document.getElementById("chatList");
 const emptyState = document.getElementById("emptyState");
 const nameInput = document.getElementById("contactName");
 const numberInput = document.getElementById("contactNumber");
-
 const chatScreen = document.getElementById("chatScreen");
 const chatUserName = document.getElementById("chatUserName");
 
-/* ===== OPEN MODAL ===== */
-if (addBtn) {
-  addBtn.onclick = () => {
-    modal.style.display = "flex";
-  };
-}
+/* ========= OPEN MODAL ========= */
+addBtn.onclick = () => {
+  modal.style.display = "flex";
+};
 
-/* ===== CLOSE MODAL ===== */
+/* ========= CLOSE MODAL ========= */
 function closeModal() {
   modal.style.display = "none";
 }
 
-/* ===== SAVE CONTACT ===== */
+/* ========= SAVE CONTACT ========= */
 function saveContact() {
   const name = nameInput.value.trim();
   const number = numberInput.value.trim();
@@ -331,10 +328,8 @@ function saveContact() {
     return;
   }
 
-  // hide welcome screen
   emptyState.style.display = "none";
 
-  // create chat item
   const chat = document.createElement("div");
   chat.className = "chat";
 
@@ -347,30 +342,37 @@ function saveContact() {
     <div class="meta">Now</div>
   `;
 
-  // click = open chat
   chat.onclick = () => openChat(name);
 
   chatList.prepend(chat);
 
-  // reset
   nameInput.value = "";
   numberInput.value = "";
   closeModal();
 }
 
-/* ===== OPEN CHAT SCREEN ===== */
+/* ========= OPEN CHAT ========= */
 function openChat(name) {
   chatList.style.display = "none";
-  emptyState.style.display = "none";
-  chatScreen.style.display = "flex";
+  chatScreen.style.display = "block";
   chatUserName.innerText = name;
+
+  // 🔥 important: mobile back handle
+  history.pushState({ page: "chat" }, "", "#chat");
 }
 
-/* ===== BACK TO CHAT LIST ===== */
+/* ========= BACK TO CHAT LIST ========= */
 function goBack() {
   chatScreen.style.display = "none";
   chatList.style.display = "block";
 }
+
+/* ========= MOBILE BACK BUTTON FIX ========= */
+window.onpopstate = function () {
+  if (chatScreen.style.display === "block") {
+    goBack();
+  }
+};
 </script>
 </body>
 </html>

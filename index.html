@@ -306,10 +306,15 @@ const emptyState = document.getElementById("emptyState");
 const nameInput = document.getElementById("contactName");
 const numberInput = document.getElementById("contactNumber");
 
+const chatScreen = document.getElementById("chatScreen");
+const chatUserName = document.getElementById("chatUserName");
+
 /* ===== OPEN MODAL ===== */
-addBtn.onclick = () => {
-  modal.style.display = "flex";
-};
+if (addBtn) {
+  addBtn.onclick = () => {
+    modal.style.display = "flex";
+  };
+}
 
 /* ===== CLOSE MODAL ===== */
 function closeModal() {
@@ -326,10 +331,13 @@ function saveContact() {
     return;
   }
 
+  // hide welcome screen
   emptyState.style.display = "none";
 
+  // create chat item
   const chat = document.createElement("div");
   chat.className = "chat";
+
   chat.innerHTML = `
     <div class="avatar">${name[0].toUpperCase()}</div>
     <div class="chat-info">
@@ -339,18 +347,29 @@ function saveContact() {
     <div class="meta">Now</div>
   `;
 
+  // click = open chat
   chat.onclick = () => openChat(name);
 
   chatList.prepend(chat);
 
+  // reset
   nameInput.value = "";
   numberInput.value = "";
   closeModal();
 }
 
-/* ===== OPEN CHAT (DUMMY) ===== */
+/* ===== OPEN CHAT SCREEN ===== */
 function openChat(name) {
-  alert("Chat opened with " + name);
+  chatList.style.display = "none";
+  emptyState.style.display = "none";
+  chatScreen.style.display = "flex";
+  chatUserName.innerText = name;
+}
+
+/* ===== BACK TO CHAT LIST ===== */
+function goBack() {
+  chatScreen.style.display = "none";
+  chatList.style.display = "block";
 }
 </script>
 </body>

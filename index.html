@@ -261,13 +261,24 @@ body {
         + Add New Contact
       </button>
     </div>
-
+      <div class="chat-screen" id="chatScreen" style="display:none;">
+  <div class="chat-header">
+    <button onclick="goBack()">←</button>
+    <span id="chatUserName">User</span>
+  </div>
+ <div class="messages">
+    <p class="empty-msg">No messages yet</p>
   </div>
 
-  <!-- MODAL -->
+  <div class="message-input">
+    <input type="text" placeholder="Type a message">
+    <button>Send</button>
+  </div>
+</div>
+<!-- MODAL -->
   <div class="modal" id="addContactModal" style="display:none;">
     <div class="modal-box">
-      <h3>Add New Contact</h3>
+    <h3>Add New Contact</h3>
       <input id="contactName" placeholder="Contact name">
       <input id="contactNumber" placeholder="Phone number">
 
@@ -285,24 +296,30 @@ body {
     <span>Calls</span>
     <span>Profile</span>
   </div>
-
 </div>
-
 <script>
+/* ===== ELEMENTS ===== */
 const addBtn = document.getElementById("addContactBtn");
 const modal = document.getElementById("addContactModal");
 const chatList = document.getElementById("chatList");
 const emptyState = document.getElementById("emptyState");
+const nameInput = document.getElementById("contactName");
+const numberInput = document.getElementById("contactNumber");
 
-addBtn.onclick = () => modal.style.display = "flex";
+/* ===== OPEN MODAL ===== */
+addBtn.onclick = () => {
+  modal.style.display = "flex";
+};
 
+/* ===== CLOSE MODAL ===== */
 function closeModal() {
   modal.style.display = "none";
 }
 
+/* ===== SAVE CONTACT ===== */
 function saveContact() {
-  const name = contactName.value.trim();
-  const number = contactNumber.value.trim();
+  const name = nameInput.value.trim();
+  const number = numberInput.value.trim();
 
   if (!name || !number) {
     alert("Name aur number dono bharo");
@@ -313,8 +330,6 @@ function saveContact() {
 
   const chat = document.createElement("div");
   chat.className = "chat";
-  chat.dataset.name = name;
-
   chat.innerHTML = `
     <div class="avatar">${name[0].toUpperCase()}</div>
     <div class="chat-info">
@@ -324,17 +339,19 @@ function saveContact() {
     <div class="meta">Now</div>
   `;
 
-  chat.onclick = () => {
-    alert("Open chat with " + name);
-  };
+  chat.onclick = () => openChat(name);
 
   chatList.prepend(chat);
 
-  contactName.value = "";
-  contactNumber.value = "";
+  nameInput.value = "";
+  numberInput.value = "";
   closeModal();
 }
-</script>
 
+/* ===== OPEN CHAT (DUMMY) ===== */
+function openChat(name) {
+  alert("Chat opened with " + name);
+}
+</script>
 </body>
 </html>
